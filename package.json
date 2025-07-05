@@ -4,8 +4,8 @@
   "description": "Modern URL shortener with React & Node.js",
   "main": "index.js",
   "scripts": {
-    "build": "cd FRONTEND && npm install && npm run build",
-    "start": "cd BACKEND && npm install && npm start",
+    "build":"npm install --prefix BACKEND && npm install --prefix FRONTEND && npm run build --prefix FRONTEND" ,
+    "start":"npm run start --prefix BACKEND",
     "dev:backend": "cd BACKEND && npm run dev",
     "dev:frontend": "cd FRONTEND && npm run dev",
     "install:all": "npm install && cd BACKEND && npm install && cd ../FRONTEND && npm install"
