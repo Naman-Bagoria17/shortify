@@ -11,14 +11,17 @@ dist/
 build/
 dist-ssr/
 
-# Environment variables
+# Environment variables - NEVER COMMIT THESE
 .env
+.env.*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 BACKEND/.env
+BACKEND/.env.*
 FRONTEND/.env
+FRONTEND/.env.*
 
 # Logs
 logs
