@@ -1,9 +1,19 @@
 import axios from "axios";
 
+// Use the current domain for API calls in production, localhost for development
+const getBaseURL = () => {
+    if (import.meta.env.MODE === 'production') {
+        // In production, use the same domain as the frontend
+        return window.location.origin;
+    }
+    // In development, use localhost backend
+    return "http://localhost:3000";
+};
+
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: getBaseURL(),
     timeout: 10000,
-    withCredentials:true
+    withCredentials: true
 });
 
 //this will centralise all api getting and fetching errors at one place.
@@ -17,7 +27,7 @@ axiosInstance.interceptors.response.use(
         if (error.response) {
             // The server responded with a status code outside the 2xx range
             const { status, data } = error.response;
-            
+
             switch (status) {
                 case 400:
                     console.error("Bad Request:", data);
