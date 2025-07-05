@@ -43,18 +43,34 @@ app.use("/api/auth", auth_routes)
 app.use("/api/create", shortUrl)
 
 // Root route - serve frontend if index.html exists, otherwise show API info
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
     const indexPath = path.join(__dirname, "../FRONTEND/dist/index.html");
 
     // Check if frontend build exists
-    if (require('fs').existsSync(indexPath)) {
-        res.sendFile(indexPath);
-    } else {
-        // Fallback to API info if frontend build doesn't exist
+    try {
+        const fs = await import('fs');
+        if (fs.existsSync(indexPath)) {
+            res.sendFile(indexPath);
+        } else {
+            // Fallback to API info if frontend build doesn't exist
+            res.status(200).json({
+                message: "🔗 Shortify API Server",
+                status: "Running",
+                note: "Frontend build not found",
+                endpoints: {
+                    health: "/api/health",
+                    auth: "/api/auth",
+                    users: "/api/user",
+                    urls: "/api/create"
+                }
+            });
+        }
+    } catch (error) {
         res.status(200).json({
             message: "🔗 Shortify API Server",
             status: "Running",
-            note: "Frontend build not found",
+            note: "Error checking frontend build",
+            error: error.message,
             endpoints: {
                 health: "/api/health",
                 auth: "/api/auth",
@@ -94,18 +110,25 @@ app.get("/api/debug/users", async (req, res) => {
 });
 
 // Debug endpoint to check frontend build
-app.get("/api/debug/build", (req, res) => {
-    const fs = require('fs');
-    const distPath = path.join(__dirname, "../FRONTEND/dist");
-    const indexPath = path.join(__dirname, "../FRONTEND/dist/index.html");
+app.get("/api/debug/build", async (req, res) => {
+    try {
+        const fs = await import('fs');
+        const distPath = path.join(__dirname, "../FRONTEND/dist");
+        const indexPath = path.join(__dirname, "../FRONTEND/dist/index.html");
 
-    res.json({
-        distExists: fs.existsSync(distPath),
-        indexExists: fs.existsSync(indexPath),
-        distPath: distPath,
-        indexPath: indexPath,
-        distContents: fs.existsSync(distPath) ? fs.readdirSync(distPath) : "Directory not found"
-    });
+        res.json({
+            distExists: fs.existsSync(distPath),
+            indexExists: fs.existsSync(indexPath),
+            distPath: distPath,
+            indexPath: indexPath,
+            distContents: fs.existsSync(distPath) ? fs.readdirSync(distPath) : "Directory not found"
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
 });
 
 // Serve static files from frontend build
