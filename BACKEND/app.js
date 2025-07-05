@@ -10,6 +10,11 @@ import { errorHandler } from "./src/utils/errorHandler.js";
 import cors from "cors"
 import { attachUser } from "./src/utils/attachUser.js";
 import cookieParser from "cookie-parser"
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 
 app.use(cors({
@@ -58,8 +63,20 @@ app.get("/api/health", (req, res) => {
     });
 });
 
-// /:id will do the redirection
+// Serve static files from frontend build
+app.use(express.static(path.join(__dirname, "../FRONTEND/dist")));
+
+// /:id will do the redirection (but only for short URLs, not static files)
 app.get("/:id", redirectFromShortUrl);
+
+// Catch all handler: send back React's index.html file for any non-API routes
+app.get("*", (req, res) => {
+    // Don't serve index.html for API routes or short URL redirects
+    if (req.path.startsWith("/api/") || req.path.match(/^\/[a-zA-Z0-9]{6,}$/)) {
+        return res.status(404).json({ message: "Route not found" });
+    }
+    res.sendFile(path.join(__dirname, "../FRONTEND/dist/index.html"));
+});
 
 app.use(errorHandler)
 
