@@ -1,0 +1,48 @@
+services:
+  # Backend API Service
+  - type: web
+    name: shortify-backend
+    runtime: node
+    plan: free
+    buildCommand: cd BACKEND && npm install
+    startCommand: cd BACKEND && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: APP_URL
+        fromService:
+          type: web
+          name: shortify-backend
+          property: host
+
+  # Frontend Static Site
+  - type: static
+    name: shortify-frontend
+    runtime: static
+    plan: free
+    buildCommand: cd FRONTEND && npm install && npm run build
+    staticPublishPath: ./FRONTEND/dist
+    pullRequestPreviewsEnabled: true
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+# Database (if you want to use Render's PostgreSQL instead of MongoDB)
+# databases:
+#   - name: shortify-db
+#     plan: free

@@ -1,0 +1,28 @@
+{
+  "name": "shortify",
+  "version": "1.0.0",
+  "description": "Modern URL shortener with React & Node.js",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd FRONTEND && npm install && npm run build",
+    "start": "cd BACKEND && npm install && npm start",
+    "dev:backend": "cd BACKEND && npm run dev",
+    "dev:frontend": "cd FRONTEND && npm run dev",
+    "install:all": "npm install && cd BACKEND && npm install && cd ../FRONTEND && npm install"
+  },
+  "keywords": [
+    "url-shortener",
+    "shortify",
+    "react",
+    "nodejs",
+    "mongodb"
+  ],
+  "author": "Naman Bagoria",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Naman-Bagoria17/shortify.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
