@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-dotenv.config("./.env")
+dotenv.config()
 import connectDB from "./src/config/mongo.config.js"
 import shortUrl from "./src/routes/shortUrl.route.js";
 import auth_routes from "./src/routes/auth.routes.js"
