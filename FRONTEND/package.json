@@ -26,6 +26,7 @@
     "react-redux": "^9.2.0",
     "react-tooltip": "^5.29.1",
     "redux": "^5.0.1",
+    "shortify": "file:..",
     "tailwindcss": "^4.1.10"
   },
   "devDependencies": {

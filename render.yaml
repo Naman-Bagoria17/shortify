@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: shortify-backend
+    env: node
+    plan: free
+    buildCommand: |
+      cd BACKEND && npm install
+      cd ../FRONTEND && npm install && npm run build
+    startCommand: cd BACKEND && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        fromDatabase:
+          name: shortify-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: APP_URL
+        value: https://shortify-backend.onrender.com/
+    healthCheckPath: /api/health

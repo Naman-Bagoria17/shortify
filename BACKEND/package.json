@@ -25,7 +25,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.0",
     "nanoid": "^5.1.5",
-    "rate-limiter-flexible": "^7.1.1"
+    "rate-limiter-flexible": "^7.1.1",
+    "shortify": "file:.."
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
