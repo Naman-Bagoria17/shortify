@@ -42,18 +42,27 @@ app.use("/api/user", user_routes)
 app.use("/api/auth", auth_routes)
 app.use("/api/create", shortUrl)
 
-// Root route
+// Root route - serve frontend if index.html exists, otherwise show API info
 app.get("/", (req, res) => {
-    res.status(200).json({
-        message: "🔗 Shortify API Server",
-        status: "Running",
-        endpoints: {
-            health: "/api/health",
-            auth: "/api/auth",
-            users: "/api/user",
-            urls: "/api/create"
-        }
-    });
+    const indexPath = path.join(__dirname, "../FRONTEND/dist/index.html");
+
+    // Check if frontend build exists
+    if (require('fs').existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        // Fallback to API info if frontend build doesn't exist
+        res.status(200).json({
+            message: "🔗 Shortify API Server",
+            status: "Running",
+            note: "Frontend build not found",
+            endpoints: {
+                health: "/api/health",
+                auth: "/api/auth",
+                users: "/api/user",
+                urls: "/api/create"
+            }
+        });
+    }
 });
 
 // Health check endpoint for Render
@@ -84,8 +93,27 @@ app.get("/api/debug/users", async (req, res) => {
     }
 });
 
+// Debug endpoint to check frontend build
+app.get("/api/debug/build", (req, res) => {
+    const fs = require('fs');
+    const distPath = path.join(__dirname, "../FRONTEND/dist");
+    const indexPath = path.join(__dirname, "../FRONTEND/dist/index.html");
+
+    res.json({
+        distExists: fs.existsSync(distPath),
+        indexExists: fs.existsSync(indexPath),
+        distPath: distPath,
+        indexPath: indexPath,
+        distContents: fs.existsSync(distPath) ? fs.readdirSync(distPath) : "Directory not found"
+    });
+});
+
 // Serve static files from frontend build
 app.use(express.static(path.join(__dirname, "../FRONTEND/dist")));
+
+// Debug: Log the paths being used
+console.log("Static files path:", path.join(__dirname, "../FRONTEND/dist"));
+console.log("Index.html path:", path.join(__dirname, "../FRONTEND/dist/index.html"));
 
 // /:id will do the redirection (but only for short URLs that look like short URLs)
 app.get("/:id([a-zA-Z0-9]{6,8})", redirectFromShortUrl);
