@@ -87,13 +87,13 @@ app.get("/api/debug/users", async (req, res) => {
 // Serve static files from frontend build
 app.use(express.static(path.join(__dirname, "../FRONTEND/dist")));
 
-// /:id will do the redirection (but only for short URLs, not static files)
-app.get("/:id", redirectFromShortUrl);
+// /:id will do the redirection (but only for short URLs that look like short URLs)
+app.get("/:id([a-zA-Z0-9]{6,8})", redirectFromShortUrl);
 
 // Catch all handler: send back React's index.html file for any non-API routes
 app.get("*", (req, res) => {
-    // Don't serve index.html for API routes or short URL redirects
-    if (req.path.startsWith("/api/") || req.path.match(/^\/[a-zA-Z0-9]{6,}$/)) {
+    // Don't serve index.html for API routes
+    if (req.path.startsWith("/api/")) {
         return res.status(404).json({ message: "Route not found" });
     }
     res.sendFile(path.join(__dirname, "../FRONTEND/dist/index.html"));

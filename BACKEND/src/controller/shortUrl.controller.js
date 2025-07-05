@@ -22,8 +22,16 @@ export const createShortUrl = wrapASync(async (req, res) => {
 
 export const redirectFromShortUrl = wrapASync(async (req, res) => {
   const { id } = req.params;
+  console.log('Attempting to redirect short URL:', id);
+
   const url = await getShortUrl(id);
-  if (!url) throw new Error("Short URL not found");
+  if (!url) {
+    console.log('Short URL not found:', id);
+    // Instead of throwing an error, redirect to frontend
+    return res.redirect('/');
+  }
+
+  console.log('Redirecting to:', url.full_url);
   res.redirect(url.full_url);
 });
 
