@@ -21,6 +21,8 @@ app.use(cors({
     origin: [
         'http://localhost:5173',
         'http://localhost:5174',
+        'http://localhost:3000',
+        'http://localhost:4173',
         'https://shortify-frontend.onrender.com',
         /\.onrender\.com$/
     ],
@@ -61,6 +63,25 @@ app.get("/api/health", (req, res) => {
         message: "Shortify API is running",
         timestamp: new Date().toISOString()
     });
+});
+
+// Debug endpoint to check database connection
+app.get("/api/debug/users", async (req, res) => {
+    try {
+        const User = (await import("./src/models/user.model.js")).default;
+        const userCount = await User.countDocuments();
+        const users = await User.find({}, { email: 1, name: 1 }).limit(5);
+        res.json({
+            success: true,
+            userCount,
+            sampleUsers: users
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
 });
 
 // Serve static files from frontend build

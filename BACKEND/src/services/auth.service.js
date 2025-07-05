@@ -18,12 +18,25 @@ export const registerUser = async (name, email, password) => {
 };
 
 export const loginUser = async (email, password) => {
+    console.log('Login attempt for email:', email);
     const user = await findUserByEmailAndPassword(email);
-    if (!user) throw new Error("Invalid Credentials");
+    if (!user) {
+        console.log('User not found for email:', email);
+        const error = new Error("Invalid Credentials");
+        error.statusCode = 401;
+        throw error;
+    }
 
+    console.log('User found, checking password...');
     const isValid = await user.comparePassword(password);
-    if (!isValid) throw new Error("Invalid Credentials");
+    if (!isValid) {
+        console.log('Password validation failed for email:', email);
+        const error = new Error("Invalid Credentials");
+        error.statusCode = 401;
+        throw error;
+    }
 
+    console.log('Login successful for email:', email);
     const token = signToken({ id: user._id });
     return { token, user };
 };
@@ -50,4 +63,3 @@ export const logoutUser = async (email, password) => {
         cookieOptions
     };
 };
-  
