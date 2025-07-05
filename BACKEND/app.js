@@ -131,6 +131,30 @@ app.get("/api/debug/build", async (req, res) => {
     }
 });
 
+// Debug endpoint to check short URLs in database
+app.get("/api/debug/urls", async (req, res) => {
+    try {
+        const ShortUrl = (await import("./src/models/shortUrl.model.js")).default;
+        const urlCount = await ShortUrl.countDocuments();
+        const urls = await ShortUrl.find({}).limit(10);
+        res.json({
+            success: true,
+            urlCount,
+            sampleUrls: urls.map(url => ({
+                id: url._id,
+                short_url: url.short_url,
+                full_url: url.full_url,
+                clicks: url.clicks
+            }))
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
 // Serve static files from frontend build
 app.use(express.static(path.join(__dirname, "../FRONTEND/dist")));
 
