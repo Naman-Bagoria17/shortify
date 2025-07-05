@@ -35,6 +35,20 @@ app.use("/api/user", user_routes)
 app.use("/api/auth", auth_routes)
 app.use("/api/create", shortUrl)
 
+// Root route
+app.get("/", (req, res) => {
+    res.status(200).json({
+        message: "🔗 Shortify API Server",
+        status: "Running",
+        endpoints: {
+            health: "/api/health",
+            auth: "/api/auth",
+            users: "/api/user",
+            urls: "/api/create"
+        }
+    });
+});
+
 // Health check endpoint for Render
 app.get("/api/health", (req, res) => {
     res.status(200).json({
