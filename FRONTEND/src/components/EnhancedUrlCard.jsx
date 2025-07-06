@@ -38,13 +38,15 @@ const EnhancedUrlCard = ({
     }
   };
 
+  const baseShortUrl = `${window.location.origin}/${url.short_url}`;
+
   const handleCopy = () => {
-    onCopy(`http://localhost:3000/${url.short_url}`, url._id);
+    onCopy(baseShortUrl, url._id);
     toast.success('URL copied to clipboard!');
   };
 
   const handleShare = () => {
-    onShare(`http://localhost:3000/${url.short_url}`);
+    onShare(baseShortUrl);
   };
 
   const handleDelete = () => {
@@ -113,12 +115,12 @@ const EnhancedUrlCard = ({
             <div className="flex items-center space-x-2 flex-1 min-w-0">
               <FiExternalLink className="w-4 h-4 text-white/70 flex-shrink-0" />
               <a
-                href={`http://localhost:3000/${url.short_url}`}
+                href={baseShortUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-pink-300 transition-colors truncate font-mono"
               >
-                localhost:3000/{url.short_url}
+                {window.location.origin.replace(/^https?:\/\//, '')}/{url.short_url}
               </a>
             </div>
           </div>
