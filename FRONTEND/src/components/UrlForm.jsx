@@ -4,7 +4,10 @@ import { useSelector } from 'react-redux';
 import { queryClient } from '../main';
 import { motion, AnimatePresence } from 'framer-motion';
 import ShareModal from './ShareModal';
-import { FiShare2, FiCopy, FiCheck, FiLink, FiLoader, FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
+import {
+  FiShare2, FiCopy, FiCheck, FiLink,
+  FiLoader, FiAlertCircle, FiCheckCircle
+} from 'react-icons/fi';
 
 const UrlForm = () => {
   const [url, setUrl] = useState("");
@@ -27,6 +30,8 @@ const UrlForm = () => {
     }
   };
 
+  const isValidSlug = (slug) => /^[a-zA-Z0-9_-]*$/.test(slug); // empty is valid
+
   useEffect(() => {
     document.getElementById('url')?.focus();
   }, []);
@@ -38,6 +43,11 @@ const UrlForm = () => {
   const handleSubmit = async () => {
     if (!isValidUrl) {
       setError('Please enter a valid URL');
+      return;
+    }
+
+    if (!isValidSlug(customSlug)) {
+      setError('Slug can only contain letters, numbers, dashes (-), and underscores (_)');
       return;
     }
 
@@ -118,7 +128,10 @@ const UrlForm = () => {
               value={customSlug}
               onChange={(e) => setCustomSlug(e.target.value)}
               placeholder="custom-slug (optional)"
-              className="w-full px-5 py-3 rounded-xl border-2 border-white/30 focus:border-white/50 focus:outline-none focus:ring-4 focus:ring-white/20 bg-white/90 backdrop-blur-sm text-gray-800 placeholder-gray-500"
+              className={`w-full px-5 py-3 rounded-xl border-2 ${customSlug && !isValidSlug(customSlug)
+                ? 'border-red-400 focus:border-red-500 focus:ring-red-200'
+                : 'border-white/30 focus:border-white/50'
+                } focus:outline-none focus:ring-4 focus:ring-white/20 bg-white/90 backdrop-blur-sm text-gray-800 placeholder-gray-500`}
             />
           </motion.div>
         )}
