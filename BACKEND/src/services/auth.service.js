@@ -12,9 +12,15 @@ export const registerUser = async (name, email, password) => {
     const existing = await findUserByEmail(email);
     if (existing) throw new ConflictError("User already exists");
 
+    //   - Creates new user
+    //   - Signs a JWT with user ID
+    //   - Returns { token, user }
     const newUser = await createUser(name, email, password);
     const token = signToken({ id: newUser._id });
     return { token, user: newUser };
+    //The frontend gets:
+    // token: for authentication (usually stored in a cookie or local storage)
+    // user: to display user info(like name, email) on the UI
 };
 
 export const loginUser = async (email, password) => {
@@ -41,6 +47,8 @@ export const loginUser = async (email, password) => {
     return { token, user };
 };
 
+// This approach ensures only valid users can logout, and avoids tampering.
+//In logoutUser(), I verify user credentials before clearing the auth token. I also return secure cookie options to handle logout cleanly.
 export const logoutUser = async (email, password) => {
     if (!password) throw new Error("Password required");
 
@@ -58,6 +66,7 @@ export const logoutUser = async (email, password) => {
         throw err;
     }
 
+    //Also returns cookie options(so controller can clear cookie)
     return {
         message: "Logout successful",
         cookieOptions

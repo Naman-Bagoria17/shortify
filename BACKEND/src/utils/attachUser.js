@@ -1,3 +1,9 @@
+// This utility middleware:
+// Reads the JWT token from the browser cookie.
+// Verifies the token.
+// Fetches the user from the database using the ID from the token.
+// Attaches the user to req.user so that downstream routes/middleware/controllers can access user info easily.
+
 import { findUserById } from "../dao/user.dao.js"
 import { verifyToken } from "./helper.js"
 

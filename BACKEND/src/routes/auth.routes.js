@@ -6,5 +6,7 @@ const router = express.Router();
 router.post("/register", register_user);
 router.post("/login", login_user);
 router.post("/logout", authMiddleware, logout_user);
+
+// This route allows the frontend to fetch the logged-in user’s information using the JWT stored in the cookie.
 router.get("/me", authMiddleware, get_current_user)
 export default router;

@@ -1,3 +1,4 @@
+// I separated guest and authenticated URL creation into different services. For custom slugs, I check format and uniqueness. For deletion, I verify ownership to prevent unauthorized access.I separated guest and authenticated URL creation into different services. For custom slugs, I check format and uniqueness. For deletion, I verify ownership to prevent unauthorized access.
 import {
     getCustomShortUrl,
     saveShortUrl,
@@ -6,6 +7,7 @@ import {
 } from "../dao/shortUrl.js";
 import { generateNanoId } from "../utils/helper.js";
 
+// "I use createShortUrlWithoutUser() to generate a random 7-char slug and store it without user ID.
 export const createShortUrlWithoutUser = async (url) => {
     const shortUrl = generateNanoId(7);
     if (!shortUrl) throw new Error("Short URL not generated");
@@ -14,6 +16,7 @@ export const createShortUrlWithoutUser = async (url) => {
     return shortUrl;
 };
 
+//I use createShortUrlWithUser() which allows users to specify a slug and validates format + uniqueness.
 export const createShortUrlWithUser = async (url, userId, slug = null) => {
     const shortUrl = slug || generateNanoId(7);
 
@@ -31,6 +34,7 @@ export const createShortUrlWithUser = async (url, userId, slug = null) => {
 };
 
 
+// In deleteShortUrlService(), I check if the logged-in user's ID matches the URL's creator ID before deleting.
 export const deleteShortUrlService = async (id, userId) => {
     const doc = await getShortUrlById(id);
     if (!doc) throw new Error("Short URL not found");
