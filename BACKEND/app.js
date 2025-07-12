@@ -5,7 +5,7 @@ import connectDB from "./src/config/mongo.config.js";
 import shortUrl from "./src/routes/shortUrl.route.js";
 import auth_routes from "./src/routes/auth.routes.js";
 import user_routes from "./src/routes/user.routes.js";
-import { redirectFromShortUrl } from "./src/controller/shortUrl.controller.js";
+import redirect_routes from "./src/routes/redirect.routes.js";
 import { errorHandler } from "./src/utils/errorHandler.js";
 import cors from "cors";
 import { attachUser } from "./src/utils/attachUser.js";
@@ -72,58 +72,8 @@ app.get("/api/health", (req, res) => {
     });
 });
 
-// Debug routes
-app.get("/api/debug/users", async (req, res) => {
-    try {
-        const User = (await import("./src/models/user.model.js")).default;
-        const userCount = await User.countDocuments();
-        const users = await User.find({}, { email: 1, name: 1 }).limit(5);
-        res.json({ success: true, userCount, sampleUsers: users });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
-});
-
-app.get("/api/debug/build", (req, res) => {
-    const distPath = path.join(__dirname, "../FRONTEND/dist");
-    const indexPath = path.join(__dirname, "../FRONTEND/dist/index.html");
-
-    res.json({
-        distExists: fs.existsSync(distPath),
-        indexExists: fs.existsSync(indexPath),
-        distPath,
-        indexPath,
-        distContents: fs.existsSync(distPath) ? fs.readdirSync(distPath) : "Directory not found"
-    });
-});
-
-app.get("/api/debug/urls", async (req, res) => {
-    try {
-        const ShortUrl = (await import("./src/models/shortUrl.model.js")).default;
-        const urlCount = await ShortUrl.countDocuments();
-        const urls = await ShortUrl.find({}).limit(10);
-        res.json({
-            success: true,
-            urlCount,
-            sampleUrls: urls.map(url => ({
-                id: url._id,
-                short_url: url.short_url,
-                full_url: url.full_url,
-                clicks: url.clicks
-            }))
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
-});
-
-// ✅ Updated redirection route — allows any slug, not just 6-8 alphanumerics
-app.get("/:id", (req, res, next) => {
-    // Skip if it's clearly a frontend or API route
-    const reserved = ["api", "login", "signup", "dashboard"];
-    if (reserved.includes(req.params.id)) return next();
-    return redirectFromShortUrl(req, res, next);
-});
+// Updated redirection route — allows any slug, not just 6-8 alphanumerics
+app.use("/", redirect_routes);
 
 // Catch-all: send React app for all non-API routes
 app.get("*", (req, res) => {
@@ -140,5 +90,5 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     connectDB();
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
