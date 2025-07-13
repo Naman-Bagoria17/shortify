@@ -19,6 +19,10 @@ A modern, full-stack URL shortener application that transforms long URLs into sh
 **Backend:** Node.js, Express.js, MongoDB, JWT Authentication  
 **Deployment:** Render (Full-stack deployment ready)
 
+## 🌐 Live Demo
+👉 [Launch Shortify](https://shortify-brandnew.onrender.com)
+🧪 Test it out by registering a new account or shortening a URL directly!
+
 ## 👨‍💻 Author
 
 **Naman Bagoria**
