@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from '@tanstack/react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiLink, FiUser, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
+import { FiLink, FiUser, FiLogOut, FiMenu, FiX, FiInfo } from 'react-icons/fi';
 import { logout } from '../store/slices/authSlice';
 import { logoutUser } from '../api/user.api';
 import LogoutModal from './LogoutModel.jsx';
 import AdvancedLogo from './AdvancedLogo.jsx';
+import AboutPopup from './AboutPopup.jsx';
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,8 @@ const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showAboutPopup, setShowAboutPopup] = useState(false);
+  const [aboutHoverTimeout, setAboutHoverTimeout] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,6 +39,38 @@ const Navbar = () => {
     } catch (err) {
       throw err; // ❌ do not close modal, let modal handle error
     }
+  };
+
+  // Handle about popup hover with delay
+  const handleAboutHover = () => {
+    if (aboutHoverTimeout) {
+      clearTimeout(aboutHoverTimeout);
+      setAboutHoverTimeout(null);
+    }
+    setShowAboutPopup(true);
+  };
+
+  const handleAboutLeave = () => {
+    const timeout = setTimeout(() => {
+      setShowAboutPopup(false);
+    }, 200); // Short delay to allow moving to popup
+    setAboutHoverTimeout(timeout);
+  };
+
+  const handleAboutPopupHover = () => {
+    if (aboutHoverTimeout) {
+      clearTimeout(aboutHoverTimeout);
+      setAboutHoverTimeout(null);
+    }
+  };
+
+  const handleAboutPopupLeave = () => {
+    setShowAboutPopup(false);
+  };
+
+  // Handle mobile about popup toggle
+  const handleMobileAboutToggle = () => {
+    setShowAboutPopup(!showAboutPopup);
   };
 
   return (
@@ -60,15 +95,34 @@ const Navbar = () => {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
-              {/* Advanced Logo */}
-              <Link to="/" className="flex items-center">
-                <AdvancedLogo
-                  size="md"
-                  showText={true}
-                  animated={true}
-                  className="hover:scale-105 transition-transform duration-300"
-                />
-              </Link>
+              {/* Advanced Logo with About Popup */}
+              <div className="flex items-center space-x-2">
+                <div
+                  className="relative"
+                  onMouseEnter={handleAboutHover}
+                  onMouseLeave={handleAboutLeave}
+                >
+                  <Link to="/" className="flex items-center">
+                    <AdvancedLogo
+                      size="md"
+                      showText={true}
+                      animated={true}
+                      className="hover:scale-105 transition-transform duration-300"
+                    />
+                  </Link>
+                </div>
+
+                {/* Mobile About Info Button */}
+                <motion.button
+                  onClick={handleMobileAboutToggle}
+                  className="md:hidden p-1.5 text-white hover:bg-white/10 rounded-lg transition-colors duration-300"
+                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.05 }}
+                  title="About Shortify"
+                >
+                  <FiInfo className="w-4 h-4" />
+                </motion.button>
+              </div>
 
               {/* Desktop Navigation */}
               <div className="hidden md:flex items-center space-x-6">
@@ -264,6 +318,14 @@ const Navbar = () => {
           />
         )}
       </AnimatePresence>
+
+      {/* About Popup */}
+      <AboutPopup
+        isVisible={showAboutPopup}
+        onClose={handleAboutPopupLeave}
+        onMouseEnter={handleAboutPopupHover}
+        onMouseLeave={handleAboutPopupLeave}
+      />
     </>
   );
 };

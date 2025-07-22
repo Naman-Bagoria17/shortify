@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
 
 /* Dark Glassmorphism Theme Variables */
 :root {
@@ -1101,4 +1101,34 @@ main {
 .navbar-fixed-container {
     border-bottom: 1px solid rgba(135, 206, 235, 0.3) !important;
     box-shadow: 0 1px 10px rgba(135, 206, 235, 0.2) !important;
+}
+
+/* About popup styling */
+.about-popup {
+    z-index: 9999 !important;
+}
+
+/* Ensure about popup is above navbar */
+.about-popup-backdrop {
+    z-index: 9998 !important;
+}
+
+/* Mobile about popup adjustments */
+@media (max-width: 768px) {
+    .about-popup-panel {
+        width: 100vw !important;
+        max-width: 100vw !important;
+    }
+
+    .about-popup-content {
+        padding: 16px !important;
+        padding-top: 80px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-popup-content {
+        padding: 12px !important;
+        padding-top: 75px !important;
+    }
 }

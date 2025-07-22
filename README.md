@@ -20,7 +20,7 @@ A modern, full-stack URL shortener application that transforms long URLs into sh
 **Deployment:** Render (Full-stack deployment ready)
 
 ## 🌐 Live Demo
-👉 [Launch Shortify](https://shortify-brandnew.onrender.com)
+👉 [Launch Shortify](https://shortify-sroj.onrender.com)
 🧪 Test it out by registering a new account or shortening a URL directly!
 
 ## 👨‍💻 Author
