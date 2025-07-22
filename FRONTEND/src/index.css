@@ -1,64 +1,182 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* Custom CSS Variables */
+/* Dark Glassmorphism Theme Variables */
 :root {
-    --primary-gradient: linear-gradient(135deg, #023e8a 0%, #0077b6 100%);
-    --secondary-gradient: linear-gradient(135deg, #6c757d 0%, #adb5bd 100%);
-    --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --danger-gradient: linear-gradient(135deg, #e57373 0%, #ef5350 100%);
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --shadow-soft: 0 8px 32px rgba(2, 62, 138, 0.37);
-    --shadow-hover: 0 15px 35px rgba(2, 62, 138, 0.5);
+    /* Premium Dark Color Palette */
+    --navy-base: #0a0e1a;
+    --navy-dark: #0f1419;
+    --navy-medium: #1a1f2e;
+    --navy-light: #252a3a;
+    --greyish-black: #0d1117;
+    --slate-dark: #1e293b;
+    --slate-medium: #334155;
+    --slate-light: #475569;
+
+    /* Neon Accent Colors */
+    --neon-blue: #00f0ff;
+    --neon-blue-dim: #00d4e6;
+    --neon-blue-bright: #33f3ff;
+    --neon-glow: rgba(0, 240, 255, 0.5);
+    --neon-glow-soft: rgba(0, 240, 255, 0.2);
+
+    /* Glass Colors */
+    --glass-white: rgba(255, 255, 255, 0.1);
+    --glass-slate: rgba(148, 163, 184, 0.1);
+    --glass-blue: rgba(0, 240, 255, 0.05);
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+
+    /* Glassmorphism Effects */
+    --backdrop-blur: blur(20px);
+    --backdrop-blur-strong: blur(40px);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-border-bright: rgba(0, 240, 255, 0.3);
+
+    /* Premium Shadows */
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --shadow-glass-hover: 0 16px 64px rgba(0, 0, 0, 0.4);
+    --shadow-neon: 0 0 20px var(--neon-glow-soft);
+    --shadow-neon-bright: 0 0 40px var(--neon-glow);
+    --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+    /* Typography */
+    --font-futuristic: 'Orbitron', monospace;
+    --font-modern: 'Poppins', sans-serif;
+    --font-clean: 'Inter', sans-serif;
+
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Global Styles */
+/* Global Glassmorphism Styles */
 * {
     scroll-behavior: smooth;
+    box-sizing: border-box;
+}
+
+/* Reset margins and padding that might affect navbar */
+html {
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    background: linear-gradient(135deg, #023e8a 0%, #0077b6 50%, #6c757d 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure navbar container has no spacing */
+nav,
+.navbar,
+.navbar-container {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-clean);
+    background: radial-gradient(ellipse at top, var(--navy-medium) 0%, var(--navy-base) 50%, var(--greyish-black) 100%);
+    background-attachment: fixed;
     min-height: 100vh;
+    color: var(--text-primary);
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    margin: 0;
+    padding: 0;
 }
 
-@keyframes gradientShift {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
+/* Ambient Background Effects */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 20% 80%, var(--neon-glow-soft) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
 }
 
-/* Glass Morphism Effect */
+/* Dark Mode Enhancement */
+.dark body {
+    background: radial-gradient(ellipse at top, var(--greyish-black) 0%, var(--navy-base) 50%, #000000 100%);
+}
+
+/* Premium Glassmorphism Effects */
 .glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: var(--glass-white);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
     border: 1px solid var(--glass-border);
-    box-shadow: var(--shadow-soft);
+    border-radius: 16px;
+    box-shadow: var(--shadow-glass), var(--shadow-inner);
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
 }
 
 .glass:hover {
-    box-shadow: var(--shadow-hover);
+    background: var(--glass-slate);
+    border-color: var(--glass-border-bright);
+    box-shadow: var(--shadow-glass-hover), var(--shadow-neon), var(--shadow-inner);
     transform: translateY(-2px);
-    transition: all 0.3s ease;
 }
 
-/* Custom Button Styles */
+/* Glass Variants */
+.glass-strong {
+    background: var(--glass-slate);
+    backdrop-filter: var(--backdrop-blur-strong);
+    -webkit-backdrop-filter: var(--backdrop-blur-strong);
+}
+
+.glass-neon {
+    border-color: var(--glass-border-bright);
+    box-shadow: var(--shadow-glass), var(--shadow-neon-bright), var(--shadow-inner);
+}
+
+/* Premium Glassmorphism Button Styles */
 .btn-gradient {
-    background: var(--primary-gradient);
-    transition: all 0.3s ease;
+    background: var(--glass-white);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--glass-border-bright);
+    border-radius: 12px;
+    padding: 12px 24px;
+    color: var(--text-primary);
+    font-family: var(--font-modern);
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
     position: relative;
     overflow: hidden;
+    box-shadow: var(--shadow-glass), var(--shadow-neon);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .btn-gradient::before {
@@ -68,8 +186,8 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.5s;
+    background: linear-gradient(90deg, transparent, var(--neon-glow-soft), transparent);
+    transition: left 0.6s ease;
 }
 
 .btn-gradient:hover::before {
@@ -77,8 +195,267 @@ body {
 }
 
 .btn-gradient:hover {
+    background: var(--glass-blue);
+    border-color: var(--neon-blue);
+    color: var(--neon-blue-bright);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glass-hover), var(--shadow-neon-bright);
+    text-shadow: 0 0 10px var(--neon-glow);
+}
+
+.btn-gradient:active {
+    transform: translateY(-1px);
+}
+
+/* Secondary Glass Button */
+.btn-secondary {
+    background: var(--glass-slate);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 12px 24px;
+    color: var(--text-secondary);
+    font-family: var(--font-modern);
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-glass);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-secondary:hover {
+    background: var(--glass-white);
+    border-color: var(--glass-border-bright);
+    color: var(--text-primary);
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-glass-hover), var(--shadow-neon);
+}
+
+/* Premium Glassmorphism Cards */
+.card {
+    background: var(--glass-white);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: var(--shadow-glass), var(--shadow-inner);
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
+.card:hover {
+    background: var(--glass-slate);
+    border-color: var(--glass-border-bright);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glass-hover), var(--shadow-neon), var(--shadow-inner);
+}
+
+/* Premium Form Styles */
+.form-input {
+    background: var(--glass-white);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--text-primary);
+    font-family: var(--font-clean);
+    font-size: 0.95rem;
+    font-weight: 400;
+    width: 100%;
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-glass), inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.form-input::placeholder {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.form-input:focus {
+    outline: none;
+    background: var(--glass-blue);
+    border-color: var(--neon-blue);
+    box-shadow: var(--shadow-glass), var(--shadow-neon-bright), inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    color: var(--text-primary);
+}
+
+.form-input:focus::placeholder {
+    color: var(--neon-blue-dim);
+}
+
+/* Form Labels */
+.form-label {
+    color: var(--text-secondary);
+    font-family: var(--font-modern);
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Typography Styles */
+.heading-futuristic {
+    font-family: var(--font-futuristic);
+    font-weight: 700;
+    color: var(--text-primary);
+    text-shadow: 0 0 20px var(--neon-glow);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.text-neon {
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px var(--neon-glow);
+}
+
+/* Premium Navbar Glassmorphism - Force Sticky */
+.navbar {
+    background: var(--glass-white) !important;
+    backdrop-filter: var(--backdrop-blur-strong) !important;
+    -webkit-backdrop-filter: var(--backdrop-blur-strong) !important;
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-glass);
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 1000 !important;
+    transition: var(--transition-smooth);
+    margin: 0 !important;
+    padding: 12px 16px !important;
+}
+
+/* Force navbar to top of viewport */
+.navbar-container {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Reset any margin/padding that might push navbar down */
+.navbar,
+.navbar-container,
+nav {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Override navbar component classes */
+nav.sticky {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    z-index: 1000 !important;
+}
+
+/* Force navbar to stick properly */
+motion.nav,
+nav[class*="sticky"] {
+    position: sticky !important;
+    top: 0 !important;
+    margin: 0 !important;
+    z-index: 1000 !important;
+}
+
+/* Ensure main content areas have proper spacing */
+.main-content {
+    padding-top: 20px;
+}
+
+/* Mobile navbar adjustments - Remove problematic padding */
+@media (max-width: 768px) {
+    body {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    .navbar {
+        padding: 8px 0 !important;
+    }
+}
+
+.navbar.scrolled,
+.navbar:hover,
+.navbar.active {
+    background: var(--glass-slate) !important;
+    border-bottom-color: var(--glass-border-bright);
+    box-shadow: var(--shadow-glass-hover), var(--shadow-neon);
+}
+
+/* Premium Modal Styles */
+.modal {
+    background: var(--glass-white);
+    backdrop-filter: var(--backdrop-blur-strong);
+    -webkit-backdrop-filter: var(--backdrop-blur-strong);
+    border: 1px solid var(--glass-border-bright);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: var(--shadow-glass-hover), var(--shadow-neon-bright);
+    position: relative;
+    overflow: hidden;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.modal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+}
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--glass-white);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--glass-border-bright);
+    border-radius: 4px;
+    transition: var(--transition-smooth);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--neon-blue-dim);
+    box-shadow: 0 0 10px var(--neon-glow);
 }
 
 /* Floating Animation */
@@ -90,94 +467,638 @@ body {
     }
 
     50% {
-        transform: translateY(-10px);
+        transform: translateY(-6px);
     }
 }
 
 .float {
-    animation: float 3s ease-in-out infinite;
+    animation: float 4s ease-in-out infinite;
 }
 
-/* Pulse Animation */
-@keyframes pulse {
+/* Pulse Glow Animation */
+@keyframes pulse-glow {
 
     0%,
     100% {
-        opacity: 1;
+        box-shadow: var(--shadow-glass), var(--shadow-neon);
     }
 
     50% {
-        opacity: 0.7;
+        box-shadow: var(--shadow-glass), var(--shadow-neon-bright);
     }
 }
 
-.pulse-slow {
-    animation: pulse 2s ease-in-out infinite;
+.pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
 }
 
-/* Slide In Animations */
-@keyframes slideInUp {
+/* Accessibility - Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .float,
+    .pulse-glow {
+        animation: none !important;
+    }
+
+    body::before {
+        display: none;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    :root {
+        --glass-border: rgba(255, 255, 255, 0.5);
+        --glass-border-bright: rgba(0, 240, 255, 0.8);
+        --neon-glow: rgba(0, 240, 255, 0.8);
+        --text-primary: #ffffff;
+        --text-secondary: #e2e8f0;
+    }
+
+    .glass,
+    .card,
+    .btn-gradient,
+    .btn-secondary,
+    .form-input,
+    .modal {
+        border-width: 2px;
+        box-shadow: var(--shadow-glass), 0 0 0 1px var(--glass-border-bright);
+    }
+}
+
+/* Responsive Design - Mobile First */
+@media (max-width: 768px) {
+
+    /* Background adjustments for mobile */
+    body::before {
+        background:
+            radial-gradient(circle at 50% 50%, var(--neon-glow-soft) 0%, transparent 40%);
+    }
+
+    /* Navbar responsive - Force proper positioning */
+    .navbar {
+        padding: 8px 16px !important;
+        backdrop-filter: var(--backdrop-blur) !important;
+        -webkit-backdrop-filter: var(--backdrop-blur) !important;
+        position: sticky !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100vw !important;
+        margin: 0 !important;
+        z-index: 1000 !important;
+    }
+
+    /* Ensure no spacing above navbar on mobile */
+    .navbar-container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    /* Reset any container that might add space */
+    .app-container,
+    .main-container,
+    #root {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    /* Force motion.nav to stick properly on mobile */
+    nav[class*="sticky"],
+    nav.sticky,
+    motion.nav {
+        position: sticky !important;
+        top: 0 !important;
+        margin: 0 !important;
+        z-index: 1000 !important;
+    }
+
+    /* Mobile menu animations */
+    .mobile-menu-item {
+        transform: translateY(10px);
+        opacity: 0;
+        animation: slideInUp 0.3s ease-out forwards;
+    }
+
+    .mobile-menu-item:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .mobile-menu-item:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    @keyframes slideInUp {
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Enhanced mobile menu styling */
+    .mobile-menu {
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+
+    /* Homepage content spacing */
+    .homepage-hero {
+        padding-top: 120px;
+    }
+
+    /* Button responsive */
+    .btn-gradient,
+    .btn-secondary {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        border-radius: 12px;
+        min-height: 44px;
+        /* Touch-friendly */
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    /* Card responsive */
+    .card {
+        padding: 16px;
+        border-radius: 16px;
+        margin: 8px;
+        max-width: calc(100vw - 16px);
+    }
+
+    /* Form responsive */
+    .form-input {
+        padding: 14px 16px;
+        font-size: 1rem;
+        border-radius: 12px;
+        min-height: 44px;
+        /* Touch-friendly */
+        width: 100%;
+    }
+
+    .form-label {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+
+    /* Modal responsive */
+    .modal-container>div {
+        padding: 20px;
+        border-radius: 20px;
+        margin: 16px;
+        max-width: calc(100vw - 32px);
+        max-height: calc(100vh - 64px);
+        overflow-y: auto;
+    }
+
+    /* Typography responsive */
+    .heading-futuristic {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+    }
+
+    /* Advanced Logo responsive */
+    .logo-container {
+        transform: scale(0.9);
+    }
+
+    /* Dashboard layout responsive */
+    .dashboard-container {
+        padding: 16px 8px;
+    }
+
+    .url-list {
+        gap: 8px;
+    }
+
+    .url-item {
+        padding: 12px;
+        border-radius: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .url-actions {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 12px;
+        gap: 8px;
+    }
+
+    .url-actions button {
+        flex: 1;
+        min-height: 40px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Extra Small Screens */
+@media (max-width: 480px) {
+
+    /* Navbar extra small - Force positioning */
+    .navbar {
+        padding: 6px 12px !important;
+        position: sticky !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100vw !important;
+        margin: 0 !important;
+        z-index: 1000 !important;
+    }
+
+    /* Force no spacing on extra small screens */
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .navbar-container {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Buttons extra small */
+    .btn-gradient,
+    .btn-secondary {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+        letter-spacing: 0.25px;
+        min-height: 42px;
+    }
+
+    /* Cards extra small */
+    .card {
+        padding: 12px;
+        margin: 6px;
+        border-radius: 12px;
+        max-width: calc(100vw - 12px);
+    }
+
+    /* Modals extra small */
+    .modal-container>div {
+        padding: 16px;
+        margin: 12px;
+        max-width: calc(100vw - 24px);
+        max-height: calc(100vh - 48px);
+    }
+
+    /* Typography extra small */
+    .heading-futuristic {
+        font-size: 1.25rem;
+        letter-spacing: 0.5px;
+    }
+
+    /* Form inputs extra small */
+    .form-input {
+        padding: 12px 14px;
+        font-size: 0.95rem;
+        min-height: 42px;
+    }
+
+    .form-label {
+        font-size: 0.9rem;
+    }
+
+    /* Advanced Logo extra small */
+    .logo-container {
+        transform: scale(0.8);
+    }
+
+    /* Dashboard extra small */
+    .dashboard-container {
+        padding: 12px 6px;
+    }
+
+    .url-item {
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .url-actions button {
+        min-height: 36px;
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+
+    /* Homepage spacing for small screens */
+    .homepage-hero {
+        padding-top: 100px;
+    }
+}
+
+/* Focus Styles for Accessibility */
+.btn-gradient:focus,
+.btn-secondary:focus,
+.form-input:focus {
+    outline: 2px solid var(--neon-blue);
+    outline-offset: 2px;
+}
+
+/* Dark Mode Enhancements */
+.dark .glass,
+.dark .card,
+.dark .modal {
+    background: var(--glass-slate);
+}
+
+.dark .btn-gradient:hover {
+    background: var(--glass-blue);
+    color: var(--neon-blue-bright);
+}
+
+/* Utility Classes */
+.backdrop-blur {
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+}
+
+.backdrop-blur-strong {
+    backdrop-filter: var(--backdrop-blur-strong);
+    -webkit-backdrop-filter: var(--backdrop-blur-strong);
+}
+
+.glass-border {
+    border: 1px solid var(--glass-border);
+}
+
+.glass-border-bright {
+    border: 1px solid var(--glass-border-bright);
+}
+
+.neon-glow {
+    box-shadow: var(--shadow-neon);
+}
+
+.neon-glow-bright {
+    box-shadow: var(--shadow-neon-bright);
+}
+
+/* Advanced Logo Styles */
+.logo-container {
+    perspective: 1000px;
+}
+
+.logo-glass {
+    background: var(--glass-white);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--glass-border-bright);
+    box-shadow: var(--shadow-glass), var(--shadow-neon);
+    transition: var(--transition-smooth);
+}
+
+.logo-glass:hover {
+    background: var(--glass-blue);
+    border-color: var(--neon-blue);
+    box-shadow: var(--shadow-glass-hover), var(--shadow-neon-bright);
+    transform: translateY(-1px) rotateY(5deg);
+}
+
+/* Enhanced Modal Animations */
+@keyframes modalSlideIn {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(50px) scale(0.9) rotateX(-10deg);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1) rotateX(0deg);
     }
 }
 
-@keyframes slideInLeft {
+@keyframes modalSlideOut {
     from {
-        opacity: 0;
-        transform: translateX(-30px);
+        opacity: 1;
+        transform: translateY(0) scale(1) rotateX(0deg);
     }
 
     to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideInRight {
-    from {
         opacity: 0;
-        transform: translateX(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
+        transform: translateY(50px) scale(0.9) rotateX(10deg);
     }
 }
 
-.animate-slide-up {
-    animation: slideInUp 0.6s ease-out;
+.modal-enter {
+    animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.animate-slide-left {
-    animation: slideInLeft 0.6s ease-out;
+.modal-exit {
+    animation: modalSlideOut 0.2s ease-in;
 }
 
-.animate-slide-right {
-    animation: slideInRight 0.6s ease-out;
+/* Enhanced Button Hover Effects */
+.btn-gradient:hover {
+    background: var(--glass-blue);
+    border-color: var(--neon-blue);
+    color: var(--neon-blue-bright);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glass-hover), var(--shadow-neon-bright);
+    text-shadow: 0 0 10px var(--neon-glow);
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
+.btn-gradient:active {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-glass), var(--shadow-neon);
 }
 
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
+/* Loading Spinner for Glassmorphism */
+.glass-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--glass-border);
+    border-top: 2px solid var(--neon-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
-::-webkit-scrollbar-thumb {
-    background: var(--primary-gradient);
-    border-radius: 4px;
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: var(--secondary-gradient);
+/* Neon Text Effect */
+.text-neon-glow {
+    color: var(--neon-blue);
+    text-shadow:
+        0 0 5px var(--neon-glow),
+        0 0 10px var(--neon-glow),
+        0 0 15px var(--neon-glow);
+}
+
+/* Glass Card Hover Enhancement */
+.glass-card-hover:hover {
+    background: var(--glass-slate);
+    border-color: var(--glass-border-bright);
+    transform: translateY(-4px) rotateX(2deg);
+    box-shadow: var(--shadow-glass-hover), var(--shadow-neon), var(--shadow-inner);
+}
+
+/* Futuristic Input Focus */
+.input-futuristic:focus {
+    background: var(--glass-blue);
+    border-color: var(--neon-blue);
+    box-shadow:
+        var(--shadow-glass),
+        var(--shadow-neon-bright),
+        inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    color: var(--text-primary);
+    outline: none;
+}
+
+
+
+/* Ensure modals are always on top and properly positioned */
+.modal-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 10000 !important;
+    pointer-events: none;
+}
+
+.modal-container>* {
+    pointer-events: auto;
+}
+
+/* Responsive Utilities */
+.container-responsive {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+@media (max-width: 768px) {
+    .container-responsive {
+        padding: 0 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container-responsive {
+        padding: 0 8px;
+    }
+}
+
+/* Touch-friendly interactive elements */
+@media (max-width: 768px) {
+
+    button,
+    .btn-gradient,
+    .btn-secondary,
+    .form-input,
+    [role="button"] {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* Prevent horizontal scroll on small screens */
+html,
+body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+/* Ensure text doesn't break layout on small screens */
+.text-responsive {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Responsive spacing utilities */
+.spacing-responsive {
+    padding: 16px;
+}
+
+@media (max-width: 768px) {
+    .spacing-responsive {
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .spacing-responsive {
+        padding: 8px;
+    }
+}
+
+/* Additional blur support for older browsers */
+@supports not (backdrop-filter: blur(20px)) {
+    .modal-overlay {
+        background: rgba(0, 0, 0, 0.8) !important;
+    }
+}
+
+/* Navbar fixed container - Force fixed positioning */
+.navbar-fixed-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    z-index: 1000 !important;
+    display: block !important;
+}
+
+/* Fallback for any nav elements */
+nav,
+nav[class*="sticky"],
+.navbar {
+    position: relative;
+    width: 100%;
+    margin: 0;
+}
+
+/* Ensure proper scroll context for fixed navbar */
+#root {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Prevent unnecessary scrolling */
+html,
+body {
+    overflow-x: hidden;
+    height: 100%;
+}
+
+/* Main content styling */
+main {
+    padding-top: 64px;
+    /* Account for fixed navbar height */
+    min-height: calc(100vh - 64px);
+    /* Ensure proper height without unnecessary scroll */
+}
+
+/* Navbar glowing sky blue border */
+.navbar-fixed-container {
+    border-bottom: 1px solid rgba(135, 206, 235, 0.3) !important;
+    box-shadow: 0 1px 10px rgba(135, 206, 235, 0.2) !important;
 }

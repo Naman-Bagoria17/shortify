@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getAllUserUrls } from '../api/user.api';
 import UrlForm from '../components/UrlForm'
 import UserUrl from '../components/UserUrl'
+import AdvancedLogo from '../components/AdvancedLogo'
 
 const DashboardPage = () => {
   const { user } = useSelector((state) => state.auth);
@@ -54,7 +55,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="min-h-screen -mt-20 py-20 px-4">
+    <div className="min-h-screen -mt-14 py-20 px-4">
       <motion.div
         className="max-w-6xl mx-auto"
         variants={containerVariants}
@@ -66,8 +67,13 @@ const DashboardPage = () => {
           variants={itemVariants}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-lg rounded-full mb-4 float">
-            <FiLink className="w-8 h-8 text-white" />
+          <div className="inline-flex items-center justify-center mb-4">
+            <AdvancedLogo
+              size="lg"
+              showText={false}
+              animated={true}
+              className="scale-125 hover:scale-[1.35] transition-transform duration-300"
+            />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Welcome back, {user?.name || 'User'}!

@@ -5,10 +5,12 @@ import Navbar from './components/NavBar'
 
 const RootLayout = () => {
   return (
-    <>
-      <Navbar/>
-      <Outlet/>
-    </>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+    </div>
   )
 }
 

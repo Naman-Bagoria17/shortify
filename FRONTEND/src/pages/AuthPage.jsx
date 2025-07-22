@@ -8,7 +8,7 @@ const AuthPage = () => {
     const [isLogin, setIsLogin] = useState(true);
 
     return (
-        <div className="min-h-screen -mt-20 flex flex-col items-center justify-center px-4 py-20">
+        <div className="flex flex-col items-center justify-center px-4 py-8 min-h-[calc(100vh-64px)]">
             <motion.div
                 className="w-full max-w-md"
                 initial={{ opacity: 0, y: 20 }}

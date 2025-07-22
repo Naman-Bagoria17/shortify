@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Link } from '@tanstack/react-router';
 import { FiLink, FiZap, FiShield, FiTrendingUp } from 'react-icons/fi';
 import UrlForm from '../components/UrlForm';
+import AdvancedLogo from '../components/AdvancedLogo';
 
 const HomePage = () => {
   const { isAuthenticated } = useSelector(state => state.auth);
@@ -50,10 +51,10 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen -mt-20 flex flex-col">
+    <div className="flex flex-col min-h-[calc(100vh-64px)]">
       {/* Hero Section */}
       <motion.div
-        className="flex-1 flex flex-col items-center justify-center px-4 py-20"
+        className="flex-1 flex flex-col items-center justify-center px-4 py-24 pt-20 md:pt-22"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -64,8 +65,13 @@ const HomePage = () => {
             variants={itemVariants}
             className="mb-6"
           >
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-lg rounded-full mb-6 float">
-              <FiLink className="w-10 h-10 text-white" />
+            <div className="inline-flex items-center justify-center mb-6">
+              <AdvancedLogo
+                size="xl"
+                showText={false}
+                animated={true}
+                className="scale-150 hover:scale-[1.6] transition-transform duration-500"
+              />
             </div>
           </motion.div>
 
@@ -91,7 +97,7 @@ const HomePage = () => {
             <motion.div variants={itemVariants} className="mb-8">
               <Link
                 to="/auth"
-                className="inline-flex items-center px-8 py-4 bg-white/20 backdrop-blur-lg text-white font-semibold rounded-full hover:bg-white/30 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
+                className="inline-flex items-center btn-gradient px-8 py-4 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 Get Started Free
                 <FiZap className="ml-2 w-5 h-5" />
@@ -151,7 +157,7 @@ const HomePage = () => {
           ))}
         </motion.div>
       </motion.div>
-    </div>
+    </div >
   );
 };
 
