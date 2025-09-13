@@ -96,6 +96,8 @@ app.use("/", redirect_routes);
 
 // Catch-all(react SPA support): send React app for all non-API routes.
 // For unknown routes: If it looks like an API route (/api/...) → return 404 JSON. Otherwise → serve React’s index.html (important for React Router to handle client-side navigation).
+//For a Single Page App, all frontend routes are handled by the client. So for any non-API route, the backend sends index.html, letting the frontend router decide what to render. This avoids 404s on refresh or direct URL access.
+//Imagine a user visiting a Single Page App like React. They type in a URL like `/profile` and hit refresh. The browser sends this request to the server, but the server has no physical file called `profile`—it could easily return a 404. To prevent this, the server has a catch-all route that always sends back `index.html`. When the browser receives it, React wakes up, looks at the URL, and decides to show the Profile page. In this way, the backend acts like a helpful guide, handing over the frontend’s “instructions,” and the frontend knows exactly what to display based on the path.
 app.get("*", (req, res) => {
     if (req.path.startsWith("/api/")) {
         return res.status(404).json({ message: "Route not found" });
